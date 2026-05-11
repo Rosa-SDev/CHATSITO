@@ -11,17 +11,19 @@ const io = new Server(server , {
     }
 });
 
+const mensajes = [];
 io.on("connection", (socket) => {
     console.log("Alguien se conectó");
     // Mensajes a todos
-    socket.emit("mensaje", "Bienvenido al chat");
+    io.emit("mensaje", "Bienvenido al chat");
 
     socket.on("mensaje", (mensaje) => {
         // A todos los que estén conectados
         // io.emit("mensaje", mensaje);
 
         // A todos excepto a mí
-        socket.broadcast.emit("mensaje", mensaje);
+        mensajes.push(mensaje);
+        socket.broadcast.emit("mensaje", mensajes);
     })
 })
 
